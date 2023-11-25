@@ -1,0 +1,8 @@
+redis:
+  name: redis
+  image: redis:latest
+  port: 6379
+
+cronjob:
+  schedule: "*/1 * * * *"
+  name: redis-script-cronjob

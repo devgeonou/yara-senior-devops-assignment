@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-script
+data:
+  set_redis_keys.sh: |
+    #!/bin/bash
+    REDIS_HOST="{{ .Values.redis.name }}-service.default.svc.cluster.local"
+    REDIS_PORT="{{ .Values.redis.port }}"
+
+    KEY1="key1"
+    VALUE1="value1"
+    KEY2="key2"
+    VALUE2="value2"
+    KEY3="key3"
+    VALUE3="value3"
+
+    redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" <<-EOF
+      SET "$KEY1" "$VALUE1"
+      SET "$KEY2" "$VALUE2"
+      SET "$KEY3" "$VALUE3"
+    EOF
