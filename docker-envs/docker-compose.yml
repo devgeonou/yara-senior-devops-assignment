@@ -13,7 +13,7 @@ services:
       - mariadb_data:/var/lib/mysql 
   
   wordpress-fpm:
-    image: wordpress:6-fpm-alpine
+    build: ./wordpress
     container_name: wordpress-fpm
     depends_on: 
       - db
@@ -26,8 +26,10 @@ services:
       WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
   
   nginx:
-    image: nginx:alpine
+    build: ./nginx-wp
     container_name: wordpress-nginx
+    user: "nginx:nginx"
+    restart: "unless-stopped"
     depends_on: 
       - wordpress-fpm
     ports:
@@ -35,6 +37,18 @@ services:
     volumes:
       - ./conf.d:/etc/nginx/conf.d
       - wp_files:/var/www/html
+      
+  node-app:
+    build: ./node-app
+    ports:
+      - "8081"
+     
+  nginx-node:
+    build: ./nginx-node
+    ports:
+      - "8080:8080"
+    depends_on:
+      - node-app
       
   data_container:
     image: busybox
