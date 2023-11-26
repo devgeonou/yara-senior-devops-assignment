@@ -1,0 +1,48 @@
+version: "3.8"
+services: 
+
+  db:
+    image: mariadb:11
+    container_name: wordpress-db
+    environment:
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    volumes:
+      - mariadb_data:/var/lib/mysql 
+  
+  wordpress-fpm:
+    image: wordpress:6-fpm-alpine
+    container_name: wordpress-fpm
+    depends_on: 
+      - db
+    volumes:
+      - wp_files:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
+      WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
+      WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
+      WORDPRESS_DB_PASSWORD: "${WORDPRESS_DB_PASSWORD}"
+  
+  nginx:
+    image: nginx:alpine
+    container_name: wordpress-nginx
+    depends_on: 
+      - wordpress-fpm
+    ports:
+      - 8085:80
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - wp_files:/var/www/html
+      
+  data_container:
+    image: busybox
+    volumes:
+      - wp_files:/var/www/html
+      - mariadb_data:/var/lib/mysql
+      - ./conf.d:/etc/nginx/conf.d
+
+volumes: 
+  wp_files: 
+  mariadb_data:
