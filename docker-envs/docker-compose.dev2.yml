@@ -1,0 +1,63 @@
+version: "3.8"
+services: 
+
+  db:
+    image: mariadb:11
+    container_name: wordpress-db
+    env_file:
+      - dev2.env
+    volumes:
+      - mariadb_data:/var/lib/mysql 
+  
+  wordpress-fpm:
+    build: ./wordpress
+    container_name: wordpress-fpm
+    depends_on: 
+      - db
+    volumes:
+      - wp_files:/var/www/html
+      - www_conf:/usr/local/etc/php-fpm.d
+    env_file:
+      - dev2.env
+  
+  nginx:
+    build: ./nginx-wp
+    container_name: wordpress-nginx
+    user: "nginx:nginx"
+    restart: "unless-stopped"
+    depends_on: 
+      - wordpress-fpm
+    ports:
+      - 8086:80
+    volumes:
+      - wp_files:/var/www/html
+      - nginx_conf:/etc/nginx
+      - wordpress_conf:/etc/nginx/conf.d
+      
+  node-app:
+    build: ./node-app
+    ports:
+      - "8081"
+     
+  nginx-node:
+    build: ./nginx-node
+    ports:
+      - "8090:8080"
+    depends_on:
+      - node-app
+      
+  data_container:
+    image: busybox
+    volumes:
+      - wp_files:/var/www/html
+      - mariadb_data:/var/lib/mysql
+      - www_conf:/usr/local/etc/php-fpm.d
+      - nginx_conf:/etc/nginx
+      - wordpress_conf:/etc/nginx/conf.d
+
+volumes: 
+  wp_files: 
+  mariadb_data:
+  wordpress_conf:
+  nginx_conf:
+  www_conf:
