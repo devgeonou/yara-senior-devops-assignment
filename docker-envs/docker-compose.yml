@@ -19,7 +19,7 @@ services:
       - db
     volumes:
       - wp_files:/var/www/html
-      - www_conf:/usr/local/etc/php-fpm.d/www.conf
+      - www_conf:/usr/local/etc/php-fpm.d
     environment:
       WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
       WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
