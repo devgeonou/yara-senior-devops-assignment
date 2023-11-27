@@ -3,15 +3,15 @@ Yara Senior Devops Assignment
 
  ## About
  
- This repository contains two projects a docker compose project and a helm chart.
+This repository contains two projects: a Docker Compose project and a Helm chart.
 
- The docker compose project has 2 environmets and each deploys a wordpress site and a hello world, node app.
- 
- The wordpress site has a mariadb database and a nginx server.
+The Docker Compose project has two environments, each deploying a WordPress site and a Hello World Node.js app.
 
- The helm chart deploys a redis deployment exposed by a clusterIP service and it has a cronJob that runs a script deployed as a configMap that adds dummy data to the redis deployment, it also has a secret to store the password.
+The WordPress site includes a MariaDB database and an Nginx server.
 
- below there are instructions to test each project:
+The Helm chart deploys a Redis deployment exposed by a ClusterIP service. It also includes a cronJob that runs a script deployed as a ConfigMap to add dummy data to the Redis deployment. Additionally, there's a secret to store the password.
+
+Below are instructions to test each project:
 
  ## Test docker-env
 
@@ -51,7 +51,7 @@ Yara Senior Devops Assignment
  curl -L localhost:8090
 
  ```
- You should see a Hello Wrold! message displayed
+ You should see a Hello World! message displayed
 
 
 
