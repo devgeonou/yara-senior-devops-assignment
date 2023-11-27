@@ -1,7 +1,7 @@
 FROM nginx:stable-alpine as build
 
 LABEL maintainer="joellr17@gmail.com"
-LABEL description="Secure WordPress FPM Docker image"
+LABEL description="Secure Nginx FPM Docker image"
 
 RUN apk update --no-cache && \
     chown -R nginx:nginx /etc/nginx/ && \
@@ -14,7 +14,6 @@ RUN apk update --no-cache && \
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY wordpress.conf /etc/nginx/conf.d/wordpress.conf
-COPY node.conf /etc/nginx/conf.d/node.conf
 
 USER nginx
 FROM build as main
