@@ -5,8 +5,9 @@ metadata:
 data:
   set_redis_keys.sh: |
     #!/bin/bash
-    REDIS_HOST="{{ .Values.redis.name }}-service.default.svc.cluster.local"
-    REDIS_PORT="{{ .Values.redis.port }}"
+    REDIS_HOST="${REDIS_HOST}"
+    REDIS_PORT="${REDIS_PORT}"
+    REDIS_PASSWORD="${REDIS_PASSWORD}"
 
     KEY1="key1"
     VALUE1="value1"
@@ -15,7 +16,7 @@ data:
     KEY3="key3"
     VALUE3="value3"
 
-    redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" <<-EOF
+    redis-cli -h "$REDIS_HOST" -p "$REDIS_PORT" -a "$REDIS_PASSWORD" <<-EOF
       SET "$KEY1" "$VALUE1"
       SET "$KEY2" "$VALUE2"
       SET "$KEY3" "$VALUE3"
